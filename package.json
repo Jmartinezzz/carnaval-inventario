@@ -20,6 +20,7 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "sweetalert2": "^11.12.0"
+        "sweetalert2": "^11.12.0",
+        "yup": "^1.4.0"
     }
 }
