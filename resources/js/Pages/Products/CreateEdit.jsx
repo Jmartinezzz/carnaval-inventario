@@ -4,6 +4,7 @@ import { Head, router, Link } from '@inertiajs/react'
 import axios from 'axios';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2'
+import ValidationError from '@/Components/ValidationError'
 
 const validationSchema = Yup.object().shape({
     nombre: Yup.string().required('El nombre es obligatorio').min(2, "El nombre tiene que tener al menos dos carácteres"),
@@ -119,11 +120,7 @@ export default function CreateEdit({ auth, action, product }) {
                                             <div className="form-group">
                                                 <label htmlFor="nombre">Nombre:</label>
                                                 <input id="nombre" type="text" name="nombre" value={formData.nombre} onChange={handleChange} placeholder="Nombre del producto" className={`form-control ${errors.nombre ? 'is-invalid' : ''}`} />
-                                                {errors.nombre && (
-                                                    <div className="invalid-feedback">
-                                                        {errors.nombre}
-                                                    </div>
-                                                )}
+                                                {errors.nombre && <ValidationError message={errors.nombre} />}
                                             </div>
                                         </div>
                                     </div>
@@ -132,22 +129,14 @@ export default function CreateEdit({ auth, action, product }) {
                                             <div className="form-group">
                                                 <label htmlFor="precio">Precio:</label>
                                                 <input id="precio" type="number" step="0.01" name="precio" value={formData.precio} onChange={handleChange} placeholder="Precio del producto" className={`form-control ${errors.precio ? 'is-invalid' : ''}`} />
-                                                {errors.precio && errors.precio[0] && (
-                                                    <div className="invalid-feedback">
-                                                        {errors.precio}
-                                                    </div>
-                                                )}
+                                                {errors.precio && errors.precio[0] && <ValidationError message={errors.precio} />}
                                             </div>
                                         </div>
                                         <div className="col-12 col-md-6">
                                             <div className="form-group">
                                                 <label htmlFor="stock">Stock:</label>
                                                 <input id="stock" type="number" name="stock" value={formData.stock} onChange={handleChange} placeholder="Stock del producto" className={`form-control ${errors.stock ? 'is-invalid' : ''}`} />
-                                                {errors.stock && errors.stock[0] && (
-                                                    <div className="invalid-feedback">
-                                                        {errors.stock}
-                                                    </div>
-                                                )}
+                                                {errors.stock && errors.stock[0] && <ValidationError message={errors.stock} />}
                                             </div>
                                         </div>
                                     </div>
@@ -156,11 +145,7 @@ export default function CreateEdit({ auth, action, product }) {
                                             <div className="form-group">
                                                 <label htmlFor="descripcion">Descripción:</label>
                                                 <textarea rows="4" id="descripcion" name="descripcion" value={formData.descripcion} onChange={handleChange} placeholder="descrpcion del producto" className={`form-control ${errors.descripcion ? 'is-invalid' : ''}`}></textarea>
-                                                {errors.descripcion && errors.descripcion[0] && (
-                                                    <div className="invalid-feedback">
-                                                        {errors.descripcion}
-                                                    </div>
-                                                )}
+                                                {errors.descripcion && errors.descripcion[0] && <ValidationError message={errors.descripcion} />}
                                             </div>
                                         </div>
                                     </div>

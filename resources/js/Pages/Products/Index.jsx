@@ -11,6 +11,8 @@ export default function Index({ auth, products }) {
         precio: ''
     });
 
+    const [shouldFetchProducts, setShouldFetchProducts] = useState(false);
+
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilters(prevFilters => ({
@@ -20,13 +22,20 @@ export default function Index({ auth, products }) {
         fetchProducts()
     }
 
+    useEffect(() => {
+        if (shouldFetchProducts) {
+            fetchProducts();
+            setShouldFetchProducts(false);
+        }
+    }, [shouldFetchProducts]);
+
     const clearFilters = () => {
         setFilters({
             nombre: '',
             descripcion: '',
             precio: ''
         })
-        fetchProducts()
+        setShouldFetchProducts(true);
     }
 
     const fetchProducts = () => {
