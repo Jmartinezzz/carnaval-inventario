@@ -59,6 +59,7 @@ export default function Index({ auth, products }) {
                         title: 'Producto eliminado',
                         icon: 'success',
                     })
+                    fetchProducts()
                       
                 })
                 .catch(error => {
