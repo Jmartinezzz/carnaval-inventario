@@ -4,14 +4,14 @@ import { Head, Link, router } from '@inertiajs/react'
 import Swal from 'sweetalert2'
 import Pagination from '@/Components/Pagination'
 
-export default function Index({ auth, products }) {
+export default function Index({ auth }) {
+    const [products, setProducts] = useState([])
+    const [pagination, setPagination] = useState({});
     const [filters, setFilters] = useState({
         nombre: '',
         descripcion: '',
         precio: ''
     });
-
-    const [shouldFetchProducts, setShouldFetchProducts] = useState(false);
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -19,15 +19,12 @@ export default function Index({ auth, products }) {
             ...prevFilters,
             [name]: value
         }))
-        fetchProducts()
     }
 
     useEffect(() => {
-        if (shouldFetchProducts) {
-            fetchProducts();
-            setShouldFetchProducts(false);
-        }
-    }, [shouldFetchProducts]);
+        console.log('folters')
+        fetchProducts();
+    }, [filters]);
 
     const clearFilters = () => {
         setFilters({
@@ -35,12 +32,27 @@ export default function Index({ auth, products }) {
             descripcion: '',
             precio: ''
         })
-        setShouldFetchProducts(true);
+        router.replace(`/productos?page=1`);
     }
 
-    const fetchProducts = () => {
-        router.get(route('productos.index'), { filters }, { preserveState: true })
+    const fetchProducts = (page) => {
+        axios.get(route('api.productos.index', { page, filters }))
+            .then(response => {
+                setProducts(response.data.products)
+                setPagination(response.data.pagination);
+            })
+            .catch(error => {
+                setProducts([])
+                console.error(error);
+            });
     }
+
+    const handlePageChange = (page) => {
+        if (page !== pagination.current_page) {
+            fetchProducts(page);
+            router.replace(`/productos?page=${page}`);
+        }
+    };
 
     const deleteItem = (id, name) => {
         Swal.fire({
@@ -120,8 +132,8 @@ export default function Index({ auth, products }) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {products.data.length ? (
-                                                products.data.map(product => (
+                                            {products.length ? (
+                                                products.map(product => (
                                                     <tr key={product.id}>
                                                         <td>{product.id}</td>
                                                         <td>{product.nombre}</td>
@@ -148,7 +160,7 @@ export default function Index({ auth, products }) {
                             </div>
                             {/* /.card-body */}
                             <div className="card-footer clearfix">
-                               <Pagination links={products.links} />
+                               <Pagination {...{ pagination, handlePageChange }} />
                             </div>
                         </div>
                     </div>

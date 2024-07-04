@@ -11,6 +11,26 @@ use Illuminate\Http\Response;
 class ProductController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $products = Product::filters($request->filters)
+            ->OrderByDesc('id')
+            ->paginate(10);
+
+        return response()->json([
+            'products' => $products->items(),
+            'pagination' => [
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+                'per_page' => $products->perPage(),
+                'total' => $products->total()
+            ]
+        ], Response::HTTP_OK);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(ProductRequest $request)
