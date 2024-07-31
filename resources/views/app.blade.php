@@ -33,10 +33,10 @@
     <script src="dist/js/adminlte.js"></script>
 
     <!-- OPTIONAL SCRIPTS -->
-    <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
+    {{-- <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script> --}}
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('dist/js/demo.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{{ asset('dist/js/pages/dashboard3.js') }}"></script>
+    {{-- <script src="{{ asset('dist/js/pages/dashboard3.js') }}"></script> --}}
 </body>
 </html>

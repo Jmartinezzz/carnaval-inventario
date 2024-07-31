@@ -13,10 +13,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $products = Product::filters($request->filters)
-                ->OrderByDesc('id')
-                ->paginate(10);
-        return Inertia::render('Products/Index', ['products' => $products]);
+        return Inertia::render('Products/Index');
     }
 
     /**

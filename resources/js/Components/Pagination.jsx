@@ -1,20 +1,28 @@
 import React from 'react'
-import { Link } from '@inertiajs/react'
 
-const Pagination = ({links}) => {
+const Pagination = ({ pagination, handlePageChange }) => {
     return (
         <div>
             <ul className="pagination pagination-sm m-0 float-right">
-                {links.map((link, index) => {
-                    return (
-                        <li className={`page-item ${link.url === null && 'disabled'} ${link.active && 'active'}`}>
-                            <Link className="page-link" href={link.url || '#'}>
-                                {link.label === "&laquo; Previous" ? '«' : link.label === "Next &raquo;" ? '»': link.label}
-                            </Link>
-                        </li>
-                    )
-                })}
+                <li className="page-item">
+                    <button disabled={pagination.current_page == 1 && 'disabled'} className="page-link" onClick={() => handlePageChange(pagination.current_page - 1)}>
+                        «
+                    </button>
+                </li>
+                {Array.from({ length: pagination.last_page }, (_, i) => i + 1).map(page => (
+                    <li className={`page-item ${page == pagination.current_page && 'active'}`} key={page}>
+                        <button className="page-link" onClick={() => handlePageChange(page)}>
+                            {page}
+                        </button>
+                    </li>
+                ))}
+                <li className="page-item">
+                    <button disabled={pagination.current_page == pagination.last_page && 'disabled'} className="page-link" onClick={() => handlePageChange(pagination.current_page + 1)}>
+                        »
+                    </button>
+                </li>
             </ul>
+
         </div>
     )
 }
